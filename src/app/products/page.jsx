@@ -1,18 +1,47 @@
-import Link from "next/link"
+'use client'
 
-export default async function ProductPage() {
+import { useEffect, useState } from "react"
 
-    const resp = await fetch('https://api.escuelajs.co/api/v1/products')
-    const data = await resp.json()
+
+export default function ProductPage() {
+
+    const [products, setProducts] = useState([])
+    const [title, setTitle] = useState('')
+    useEffect(() => {
+
+        async function getProducts() {
+            const resp = await fetch('/api/products')
+            const data = await resp.json()
+            console.log(data)
+            setProducts(data)
+        }
+
+        getProducts()
+
+    }, [])
+
+
+    async function createProduct(e) {
+        e.preventDefault()
+
+        const resp = await fetch('/api/products', {
+            method: 'post',
+            body: JSON.stringify({
+                title: title
+            })
+        })
+
+        const data = await resp.json()
+        console.log(data)
+
+    }
 
     return (
         <div>
-            {data.map(product => (
-                <Link href={`/products/${product.id}`} key={product.id}>
-                    <p>{product.title}</p>
-                    <p>{product.price}</p>
-                </Link>
-            ))}
+            <form onSubmit={(e) => createProduct(e)}>
+                <input value={title} onInput={(e) => setTitle(e.target.value)} type="text" placeholder="Product Title" />
+                <button>Создать</button>
+            </form>
         </div>
     )
 }
