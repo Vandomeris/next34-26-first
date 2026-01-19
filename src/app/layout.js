@@ -11,7 +11,7 @@ const dancingScript = Dancing_Script({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={dancingScript.className}>
+    <html lang="en">
       <body>
         <header className="container mx-auto flex justify-between py-5">
           <div>LOGO</div>

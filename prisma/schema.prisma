@@ -25,8 +25,8 @@ model Post {
   title     String
   text      String
   createdAt DateTime @default(now())
-  author    User     @relation(fields: [userId], references: [id])
-  userId    Int
+  author    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    Int?
 }
 
 model Profile {
