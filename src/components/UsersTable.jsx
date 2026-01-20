@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import AddUserModal from "./AddUserModal"
+import EditUserModal from "./EditUserModal"
 
 export default function UsersTable({ Users }) {
     const [users, setUsers] = useState(Users)
@@ -25,10 +26,16 @@ export default function UsersTable({ Users }) {
     }
 
     const [addModalShow, setAddModalShow] = useState(false)
-
+    const [showEdit, setshowEdit] = useState(false)
+    const [editData, setEditData] = useState({})
 
     function showAddModal() {
         setAddModalShow(true)
+    }
+
+    function editUser(user) {
+        setEditData(user)
+        setshowEdit(true)
     }
 
     return (
@@ -59,7 +66,7 @@ export default function UsersTable({ Users }) {
                                 <td>{user.age}</td>
                                 <td>{user.posts.length}</td>
                                 <td className="flex gap-x-2">
-                                    <button className="px-2 py-1 text-white pointer bg-amber-400">Edit</button>
+                                    <button onClick={() => editUser(user)} className="px-2 py-1 text-white pointer bg-amber-400">Edit</button>
                                     <button onClick={() => deleteUser(user.id)} className="px-2 py-1 text-white pointer bg-red-400">Delete X</button>
                                 </td>
                             </tr>
@@ -69,7 +76,8 @@ export default function UsersTable({ Users }) {
                 </tbody>
 
             </table>
-            <AddUserModal show={addModalShow} setShow={setAddModalShow} />
+            <AddUserModal show={addModalShow} setShow={setAddModalShow} setUsers={setUsers} />
+            <EditUserModal setShowEdit={setshowEdit} showEdit={showEdit} editData={editData} setUsers={setUsers} />
         </div>
 
 
