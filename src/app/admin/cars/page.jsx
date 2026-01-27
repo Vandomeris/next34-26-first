@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import CreateCarForm from "./CreateCarForm"
-import { createCar } from "@/lib/serverActions"
 import DeleteButton from "./DeleteButton"
+import Link from "next/link"
 
 export default async function CarsAdminPage() {
 
@@ -25,6 +25,7 @@ export default async function CarsAdminPage() {
                             </div>
                             <p>{car.madeIn}</p>
                             <DeleteButton id={car.id} />
+                            <Link href={`/admin/cars/${car.id}/edit`}>Редактировать</Link>
                         </div>
                     ))
                 }

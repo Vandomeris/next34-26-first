@@ -38,11 +38,20 @@ model Profile {
 }
 
 model Cars {
-  id     Int    @id @default(autoincrement())
+  id     Int          @id @default(autoincrement())
   marka  String
   model  String
   hp     Int
   year   Int
   price  Int
   madeIn String
+  images CarsImages[]
+}
+
+model CarsImages {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  cars   Cars? @relation(fields: [carsId], references: [id])
+  carsId Int?
 }
