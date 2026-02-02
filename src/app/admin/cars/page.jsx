@@ -5,7 +5,11 @@ import Link from "next/link"
 
 export default async function CarsAdminPage() {
 
-    const cars = await prisma.cars.findMany()
+    const cars = await prisma.cars.findMany({
+        include: {
+            images: true
+        }
+    })
 
     return (
         <div className="container mx-auto">
@@ -18,6 +22,13 @@ export default async function CarsAdminPage() {
                         <div
                             className="p-5 rounded-lg bg-gray-600 text-white flex flex-col gap-y-3"
                             key={car.id}>
+                            <div className="flex overflow-y-scroll">
+                                {
+                                    car.images.map(img => (
+                                        <img className="w-full" key={img.id} src={`/${img.url}`} alt="" />
+                                    ))
+                                }
+                            </div>
                             <p>{car.marka} {car.model} - {car.year}</p>
                             <div className="flex justify-between">
                                 <p>{car.hp} лс</p>
