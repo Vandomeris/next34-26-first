@@ -1,6 +1,9 @@
 import Link from "next/link";
 import "./globals.css";
 import { Dancing_Script } from 'next/font/google'
+import { getServerSession } from "next-auth";
+import { options } from "@/lib/authOptions";
+import SignOutButton from "@/components/SignOutButton";
 
 
 const dancingScript = Dancing_Script({
@@ -9,7 +12,12 @@ const dancingScript = Dancing_Script({
 })
 
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+
+  const session = await getServerSession(options)
+
+  console.log(session)
+
   return (
     <html lang="en">
       <body>
@@ -20,6 +28,16 @@ export default function RootLayout({ children }) {
             <Link href="/about">About</Link>
             <Link href="/products">Products</Link>
             <Link href="/admin/cars">Cars</Link>
+            {
+              session ?
+                (<SignOutButton />) :
+                (<>
+                  <Link href="/api/auth/signin">Войти</Link>
+                  <Link href="/registration">Зарегистрироваться</Link>
+                </>)
+            }
+
+
           </nav>
         </header>
         <main>{children}</main>

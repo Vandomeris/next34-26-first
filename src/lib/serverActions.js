@@ -5,6 +5,7 @@ import { prisma } from "./prisma"
 import { redirect } from "next/navigation"
 import { writeFile } from "node:fs/promises"
 import { join } from "node:path"
+import { hash } from "bcryptjs"
 
 export async function createCar(formData) {
 
@@ -79,4 +80,23 @@ export async function editCar(id, formData) {
     })
 
     redirect('/admin/cars')
+}
+
+
+
+export async function registerUser(formData) {
+
+    const data = Object.fromEntries(formData)
+
+    const newUser = await prisma.user.create({
+        data: {
+            email: data.email,
+            password: await hash(data.password, 10)
+        }
+    })
+
+    if (newUser) {
+        redirect('/api/auth/signin')
+    }
+
 }
