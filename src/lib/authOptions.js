@@ -27,7 +27,8 @@ export const options = {
                 if (correctPassword) {
                     return {
                         id: user.id,
-                        email: user.email
+                        email: user.email,
+                        role: user.role
                     }
                 } else {
                     return null
@@ -38,6 +39,25 @@ export const options = {
         }),
 
 
-    ]
+    ],
+    callbacks: {
+        async jwt({token, user}){
+            if(user){
+                token.role = user.role
+                token.id = user.id
+            }
+            return token
+        },
+        async session({session, token}){
+
+            session.user = {
+                id: token.id,
+                email: token.email,
+                role: token.role
+            }
+
+            return session
+        }
+    }
 
 }
